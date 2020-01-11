@@ -4,13 +4,6 @@
 
 #include "Map.h"
 #include "Painter.h"
-////Painter
-//class Painter {
-
-//};
-//
-
-//
 
 
 int main()

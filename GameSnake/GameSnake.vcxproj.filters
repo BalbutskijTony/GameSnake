@@ -24,12 +24,24 @@
     <ClCompile Include="Painter.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Point2d.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Painter.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Point2d.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
