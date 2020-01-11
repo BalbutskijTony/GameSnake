@@ -15,7 +15,9 @@ public:
 	void setDirection(const Point2d& newDirection);
 
 	const std::list<Point2d>& getBody() const;
-	void addBodySegment(const Point2d& newSegment);
+	
+	void move();
+	void addSegment();
 private:
 	Point2d direction;
 	std::list<Point2d> body;

@@ -5,6 +5,9 @@
 #include "Map.h"
 #include "Painter.h"
 
+void gameTic(Player& player) {
+
+}
 
 int main()
 {

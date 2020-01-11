@@ -25,6 +25,11 @@ const std::list<Point2d>& Player::getBody() const {
 	return body;
 }
 
-void Player::addBodySegment(const Point2d& newSegment) {
+void Player::move() {
+	body.push_front(body.front() + direction);
+	body.pop_back();
+}
 
+void Player::addSegment() {
+	body.push_front(body.front() + direction);
 }
