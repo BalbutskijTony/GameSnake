@@ -8,8 +8,8 @@ Player::Player() {
 	startPoint.x = 1;
 	startPoint.y = 1;
 
-	body.emplace_back(startPoint + direction * DEFAULT_SNAKE_SIZE);
-	for (size_t curSeg = DEFAULT_SNAKE_SIZE - 1; curSeg > 0; curSeg--)
+	body.emplace_back(startPoint + direction * (DEFAULT_SNAKE_SIZE - 1));
+	for (int curSeg = DEFAULT_SNAKE_SIZE - 2; curSeg >= 0; curSeg--)
 		body.emplace_back(startPoint + direction * curSeg);
 }
 

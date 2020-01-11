@@ -11,7 +11,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1024, 512), "SFML Snake");
     Map map(64, 32);
     Painter painter;
-    
+    Player player;
 
     while (window.isOpen())
     {
@@ -24,6 +24,7 @@ int main()
 
         window.clear();
         painter.drawGrid(map, window);
+        painter.drawPlayer(player, map, window);
         window.display();
     }
     return 0;
