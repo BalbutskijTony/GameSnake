@@ -32,15 +32,17 @@ Point2d createNewApple(const Map& map, const Player& player, const std::list<Poi
 
 
 void gameTic(const Map& map, Player& player, std::list<Point2d>& apples) {
-    player.move();
     
-    Point2d head = player.getBody().front();
+    Point2d head = player.getBody().front() + player.getDirection();
+    bool isEatAppleNow = false;
     for(auto apple : apples)
         if (head == apple) {
             player.addSegment();
             apples.remove(apple);
+            isEatAppleNow = true;
             break;
         }
+    if(!isEatAppleNow) player.move();
 
     if(apples.size() < 1/**/)
         apples.push_back(createNewApple(map, player, apples));
