@@ -30,6 +30,12 @@ Point2d createNewApple(const Map& map, const Player& player, const std::list<Poi
     return apple;
 }
 
+bool isCollide(const Map& map, const Player& player) {
+    for (auto curSegment = ++player.getBody().begin(); curSegment != player.getBody().end(); ++curSegment)
+        if (*curSegment == *player.getBody().begin()) return true;
+
+    return false;
+}
 
 void gameTic(const Map& map, Player& player, std::list<Point2d>& apples) {
     
@@ -65,6 +71,7 @@ int main()
     Painter painter;
     Player player;
     sf::Event event;
+    bool isGame = true;
 
     std::chrono::time_point<std::chrono::steady_clock> startGameTic, endGameTic;
     
@@ -83,25 +90,31 @@ int main()
             {
                 // Получаем нажатую клавишу - выполняем соответствующее действие
                 if (event.key.code == sf::Keyboard::Escape) window.close();
-                if (event.key.code == sf::Keyboard::Left) move(player, Point2d(-1, 0));
-                if (event.key.code == sf::Keyboard::Right) move(player, Point2d(1, 0));
-                if (event.key.code == sf::Keyboard::Up) move(player, Point2d(0, -1));
-                if (event.key.code == sf::Keyboard::Down) move(player, Point2d(0, 1));
-
+                if (isGame) {
+                    if (event.key.code == sf::Keyboard::Left) move(player, Point2d(-1, 0));
+                    if (event.key.code == sf::Keyboard::Right) move(player, Point2d(1, 0));
+                    if (event.key.code == sf::Keyboard::Up) move(player, Point2d(0, -1));
+                    if (event.key.code == sf::Keyboard::Down) move(player, Point2d(0, 1));
+                }
             }
         }
         // TODO: Переделать
         // TODO: Разобраться в чём отличие wait_for от wait_until
-        std::future<void> nextTic = std::async([&player, &map, &apples] { gameTic(map, player, apples); });
-        nextTic.wait_for(std::chrono::milliseconds(500));
-        window.clear();
-        painter.drawGrid(map, window);
-        painter.drawPlayer(player, map, window);
-        painter.drawApples(apples, map, window);
-        window.display();
+        if (isGame) {
+            std::future<void> nextTic = std::async([&player, &map, &apples] { gameTic(map, player, apples); });
+            nextTic.wait_for(std::chrono::milliseconds(100));
+            window.clear();
+            painter.drawGrid(map, window);
+            painter.drawPlayer(player, map, window);
+            painter.drawApples(apples, map, window);
+            window.display();
 
-        endGameTic = std::chrono::steady_clock::now();
-        std::this_thread::sleep_until(startGameTic + std::chrono::milliseconds(500));
+            if (isCollide(map, player)) isGame = false;
+            endGameTic = std::chrono::steady_clock::now();
+            std::this_thread::sleep_until(startGameTic + std::chrono::milliseconds(100));
+        }
+
+        
     }
     return 0;
 }
