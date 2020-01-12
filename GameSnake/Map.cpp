@@ -1,17 +1,25 @@
 #include "Map.h"
 
 const size_t Map::getWidth() const {
-    return _width;
+    return width;
 }
 
 const size_t Map::getHeight() const {
-    return _height;
+    return height;
 }
 
 void Map::setWidth(const size_t width) {
-    _width = width;
+    this->width = width;
 }
 
 void Map::setHeight(const size_t height) {
-    _height = height;
+    this->height = height;
+}
+
+const std::vector<Point2d>& Map::getWalls() const {
+    return walls;
+}
+
+void Map::addWall(const Point2d& newWall) {
+    walls.push_back(newWall);
 }

@@ -53,3 +53,15 @@ void Painter::drawApples(const std::list<Point2d>& apples, const Map& map, sf::R
         window.draw(rectangle);
     }
 }
+
+void Painter::drawWalls(const Map& map, sf::RenderWindow& window) const {
+    float stepByX = static_cast<float>(window.getSize().x) / map.getWidth();
+    float stepByY = static_cast<float>(window.getSize().y) / map.getHeight();
+
+    for (auto wall : map.getWalls()) {
+        sf::RectangleShape rectangle(sf::Vector2f(stepByX, stepByY));
+        rectangle.move(sf::Vector2f(stepByX * wall.x, stepByY * wall.y));
+        rectangle.setFillColor(sf::Color::Magenta);
+        window.draw(rectangle);
+    }
+}

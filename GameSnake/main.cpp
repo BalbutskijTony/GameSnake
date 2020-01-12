@@ -33,8 +33,24 @@ Point2d createNewApple(const Map& map, const Player& player, const std::list<Poi
 bool isCollide(const Map& map, const Player& player) {
     for (auto curSegment = ++player.getBody().begin(); curSegment != player.getBody().end(); ++curSegment)
         if (*curSegment == *player.getBody().begin()) return true;
-
+    for (auto curWall = map.getWalls().begin(); curWall != map.getWalls().end(); ++curWall)
+        if(*curWall == *player.getBody().begin()) return true;
     return false;
+}
+
+void initWalls(Map& map) {
+    for (int curPoint = 1; curPoint < map.getWidth() - 1; curPoint++) {
+        map.addWall(Point2d(curPoint, 0));
+        map.addWall(Point2d(curPoint, map.getHeight() - 1));
+    }
+    for (int curPoint = 1; curPoint < map.getHeight() - 1; curPoint++) {
+        map.addWall(Point2d(0, curPoint));
+        map.addWall(Point2d(map.getWidth() - 1, curPoint));
+    }
+    map.addWall(Point2d(0, 0));
+    map.addWall(Point2d(0, map.getHeight() - 1));
+    map.addWall(Point2d(map.getWidth() - 1, 0));
+    map.addWall(Point2d(map.getWidth() - 1, map.getHeight() - 1));
 }
 
 void gameTic(const Map& map, Player& player, std::list<Point2d>& apples) {
@@ -67,6 +83,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1024, 512), "SFML Snake");
     Map map(64, 32);
+    initWalls(map);
     std::list<Point2d> apples;
     Painter painter;
     Player player;
@@ -75,7 +92,6 @@ int main()
 
     std::chrono::time_point<std::chrono::steady_clock> startGameTic, endGameTic;
     
-
 
     while (window.isOpen())
     {
@@ -107,6 +123,7 @@ int main()
             painter.drawGrid(map, window);
             painter.drawPlayer(player, map, window);
             painter.drawApples(apples, map, window);
+            painter.drawWalls(map, window);
             window.display();
 
             if (isCollide(map, player)) isGame = false;
