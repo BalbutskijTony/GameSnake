@@ -30,15 +30,13 @@ Point2d createNewApple(const Map& map, const Player& player, const std::list<Poi
     return apple;
 }
 
-int ticCountForApple = 10;
-int curTicForApple = 9;
+
 void gameTic(const Map& map, Player& player, std::list<Point2d>& apples) {
     player.move();
-    curTicForApple++;
-    if (curTicForApple == ticCountForApple) {
+    
+    if(apples.size() < 1/**/)
         apples.push_back(createNewApple(map, player, apples));
-        curTicForApple = 0;
-    }
+
 }
 
 
