@@ -16,3 +16,7 @@ Point2d Point2d::operator*(const int right) const {
 int Point2d::operator*(const Point2d& right) const {
 	return x * right.x + y * right.y;
 }
+
+bool Point2d::operator==(const Point2d& right) const {
+	return (x == right.x) && (y == right.y);
+}

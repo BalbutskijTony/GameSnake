@@ -5,9 +5,42 @@
 #include "Map.h"
 #include "Painter.h"
 
-void gameTic(Player& player) {
-    player.move();
+
+int generateRandInt(const int from, const int to) {
+    return from + (rand() % static_cast<int>(to - from + 1));
 }
+
+bool isPointFree(const Map& map, const Player& player, const std::list<Point2d>& apples, const Point2d& newPoint) {
+    bool result = true;
+    for (auto curPoint : player.getBody())
+        if (curPoint == newPoint) return false;
+    for (auto curApple : apples)
+        if (curApple == newPoint) return false;
+    return true;
+}
+
+Point2d createNewApple(const Map& map, const Player& player, const std::list<Point2d>& apples) {
+    Point2d apple(generateRandInt(0, map.getWidth()), generateRandInt(0, map.getHeight()));
+
+    while (!isPointFree(map, player, apples, apple)) {
+        apple.x = generateRandInt(0, map.getWidth());
+        apple.y = generateRandInt(0, map.getHeight());
+    }
+
+    return apple;
+}
+
+int ticCountForApple = 10;
+int curTicForApple = 9;
+void gameTic(const Map& map, Player& player, std::list<Point2d>& apples) {
+    player.move();
+    curTicForApple++;
+    if (curTicForApple == ticCountForApple) {
+        apples.push_back(createNewApple(map, player, apples));
+        curTicForApple = 0;
+    }
+}
+
 
 void /*Game*/ move(Player& player, const Point2d& newDirection) {
     int scalaMult = newDirection * player.getDirection();
@@ -20,6 +53,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1024, 512), "SFML Snake");
     Map map(64, 32);
+    std::list<Point2d> apples;
     Painter painter;
     Player player;
     sf::Event event;
@@ -50,11 +84,12 @@ int main()
         }
         // TODO: Переделать
         // TODO: Разобраться в чём отличие wait_for от wait_until
-        std::future<void> nextTic = std::async([&player] { gameTic(player); });
+        std::future<void> nextTic = std::async([&player, &map, &apples] { gameTic(map, player, apples); });
         nextTic.wait_for(std::chrono::seconds(1));
         window.clear();
         painter.drawGrid(map, window);
         painter.drawPlayer(player, map, window);
+        painter.drawApples(apples, map, window);
         window.display();
 
         endGameTic = std::chrono::steady_clock::now();

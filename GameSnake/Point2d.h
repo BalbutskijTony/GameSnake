@@ -13,5 +13,6 @@ public:
 	Point2d operator+(const Point2d& right) const;
 	Point2d operator*(const int right) const;
 	int operator*(const Point2d& right) const;
+	bool operator==(const Point2d& right) const;
 };
 
