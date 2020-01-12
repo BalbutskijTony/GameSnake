@@ -34,6 +34,14 @@ Point2d createNewApple(const Map& map, const Player& player, const std::list<Poi
 void gameTic(const Map& map, Player& player, std::list<Point2d>& apples) {
     player.move();
     
+    Point2d head = player.getBody().front();
+    for(auto apple : apples)
+        if (head == apple) {
+            player.addSegment();
+            apples.remove(apple);
+            break;
+        }
+
     if(apples.size() < 1/**/)
         apples.push_back(createNewApple(map, player, apples));
 
@@ -83,7 +91,7 @@ int main()
         // TODO: Переделать
         // TODO: Разобраться в чём отличие wait_for от wait_until
         std::future<void> nextTic = std::async([&player, &map, &apples] { gameTic(map, player, apples); });
-        nextTic.wait_for(std::chrono::seconds(1));
+        nextTic.wait_for(std::chrono::milliseconds(500));
         window.clear();
         painter.drawGrid(map, window);
         painter.drawPlayer(player, map, window);
@@ -91,7 +99,7 @@ int main()
         window.display();
 
         endGameTic = std::chrono::steady_clock::now();
-        std::this_thread::sleep_until(startGameTic + std::chrono::seconds(1));
+        std::this_thread::sleep_until(startGameTic + std::chrono::milliseconds(500));
     }
     return 0;
 }
