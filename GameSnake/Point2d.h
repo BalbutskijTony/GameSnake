@@ -12,5 +12,6 @@ public:
 	const Point2d& operator=(const Point2d& right);
 	Point2d operator+(const Point2d& right) const;
 	Point2d operator*(const int right) const;
+	int operator*(const Point2d& right) const;
 };
 

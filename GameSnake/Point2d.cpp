@@ -12,3 +12,7 @@ Point2d Point2d::operator+(const Point2d& right) const {
 Point2d Point2d::operator*(const int right) const {
 	return Point2d(x * right, y * right);
 }
+
+int Point2d::operator*(const Point2d& right) const {
+	return x * right.x + y * right.y;
+}
