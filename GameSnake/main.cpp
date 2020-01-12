@@ -16,6 +16,8 @@ bool isPointFree(const Map& map, const Player& player, const std::list<Point2d>&
         if (curPoint == newPoint) return false;
     for (auto curApple : apples)
         if (curApple == newPoint) return false;
+    for (auto wall : map.getWalls())
+        if (wall == newPoint) return false;
     return true;
 }
 
