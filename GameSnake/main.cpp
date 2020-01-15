@@ -91,6 +91,7 @@ int main()
     Player player;
     sf::Event event;
     bool isGame = true;
+    bool isPlayerMove = false;
 
     std::chrono::time_point<std::chrono::steady_clock> startGameTic, endGameTic;
     
@@ -101,6 +102,7 @@ int main()
        
         while (window.pollEvent(event))
         {
+            isPlayerMove = false;
             if (event.type == sf::Event::Closed)
                 window.close();
             
@@ -109,10 +111,22 @@ int main()
                 // Получаем нажатую клавишу - выполняем соответствующее действие
                 if (event.key.code == sf::Keyboard::Escape) window.close();
                 if (isGame) {
-                    if (event.key.code == sf::Keyboard::Left) move(player, Point2d(-1, 0));
-                    if (event.key.code == sf::Keyboard::Right) move(player, Point2d(1, 0));
-                    if (event.key.code == sf::Keyboard::Up) move(player, Point2d(0, -1));
-                    if (event.key.code == sf::Keyboard::Down) move(player, Point2d(0, 1));
+                    if (event.key.code == sf::Keyboard::Left && !isPlayerMove) {
+                        move(player, Point2d(-1, 0));
+                        isPlayerMove = true;
+                    }
+                    if (event.key.code == sf::Keyboard::Right && !isPlayerMove) {
+                        move(player, Point2d(1, 0));
+                        isPlayerMove = true;
+                    }
+                    if (event.key.code == sf::Keyboard::Up && !isPlayerMove) {
+                        move(player, Point2d(0, -1));
+                        isPlayerMove = true;
+                    }
+                    if (event.key.code == sf::Keyboard::Down && !isPlayerMove) {
+                        move(player, Point2d(0, 1));
+                        isPlayerMove = true;
+                    }
                 }
             }
         }
