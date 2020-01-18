@@ -3,7 +3,9 @@
 #include <future> 
 
 #include "Map.h"
+#include "Menu.h"
 #include "Painter.h"
+
 
 void gameTic(Player& player) {
     player.move();
@@ -12,6 +14,10 @@ void gameTic(Player& player) {
 
 int main()
 {
+    RenderWindow MenuWindow(VideoMode(1080, 720), "MENU", sf::Style::Fullscreen);
+    unsigned short int answer = MenuFunc(MenuWindow);//вызов меню
+    return 0;
+
     sf::RenderWindow window(sf::VideoMode(1024, 512), "SFML Snake");
     Map map(64, 32);
     Painter painter;
