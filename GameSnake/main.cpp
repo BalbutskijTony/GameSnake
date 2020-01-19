@@ -3,52 +3,45 @@
 #include <future> 
 
 #include "Map.h"
-#include "Menu.h"
+#include "MainMenu.h"
+#include "CoopMenu.h"
 #include "Painter.h"
-
-
-void gameTic(Player& player) {
-    player.move();
-}
 
 
 int main()
 {
-    RenderWindow MenuWindow(VideoMode(1080, 720), "MENU", sf::Style::Close);
-    unsigned short int answer = MenuFunc(MenuWindow);//вызов меню
-    return 0;
+    RenderWindow Window(VideoMode(1280, 720), "Snake the Game", sf::Style::Close);
 
-    sf::RenderWindow window(sf::VideoMode(1024, 512), "SFML Snake");
-    Map map(64, 32);
-    Painter painter;
-    Player player;
-    sf::Event event;
+    //Устанавливаем простой курсор
+    sf::Cursor cursor;
+    if (cursor.loadFromSystem(sf::Cursor::Arrow))
+        Window.setMouseCursor(cursor);
 
-    std::chrono::time_point<std::chrono::steady_clock> startGameTic, endGameTic;
-    
-    
-
-
-    while (window.isOpen())
-    {
-        startGameTic = std::chrono::steady_clock::now();
-       
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
+    bool GameStarted = false;
+    //Вызываем главное меню до тех пор, пока не начнем игру
+    while (!GameStarted) {
+        
+        
+        unsigned short int answer = MainMenu(Window);   //вызов Главного меню
+        switch (answer) {
+            case 0: { 
+                return 0;
+                Window.close();
+            }
+            case 1: {
+                //Тут должна вызываться одиночная игра
+                GameStarted = true;
+                break;
+            }
+            case 2: {
+                if (!CoopMenu(Window)) GameStarted = false;
+                break;
+            }
+            case 3: {
+                //Тут возможно будет меню настроек
+                break;
+            }
         }
-        // TODO: Переделать
-        // TODO: Разобраться в чём отличие wait_for от wait_until
-        std::future<void> nextTic = std::async([&player] { gameTic(player); });
-        nextTic.wait_for(std::chrono::seconds(1));
-        window.clear();
-        painter.drawGrid(map, window);
-        painter.drawPlayer(player, map, window);
-        window.display();
 
-        endGameTic = std::chrono::steady_clock::now();
-        std::this_thread::sleep_until(startGameTic + std::chrono::seconds(1));
     }
-    return 0;
 }

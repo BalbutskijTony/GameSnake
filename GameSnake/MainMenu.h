@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <Windows.h>
 #include "Math.h"
@@ -6,29 +7,29 @@
 #include <SFML/Window.hpp>
 
 
-//TODO Доделать кнопки в сетевой
-//TODO Настроить вывод списка серверов текстом
-//TODO Договориться о возвращаемых кодах
+//TODO Разобраться с очисткой данных
+//TODO Хранить все кнопки для каждого из пунктов в одной текстуре
+//TODO Сделать однократное нажатие на мышку
 
 
-#define PreScaleX 1280 //Стандартные настройки окна
-#define PreScaleY 720
-using namespace sf;
+//Проверка положения мышки над спарайтом
+bool MouseOnSprite(RenderWindow& window, Sprite sprite) {
+	if (sprite.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) return true;
+	else return false;
+}
 
-
-unsigned short int MenuFunc(RenderWindow& window) {
+unsigned short int MainMenu(RenderWindow& window) {
 	
-	Vector2u windowParam = window.getSize(); //Берем настройки окна
+	//Берем настройки окна
+	Vector2u windowParam = window.getSize(); 
 	std::cout << windowParam.x << ' ' << windowParam.y << std::endl;
 	
-	Vector2f scale((float)windowParam.x/PreScaleX, (float)windowParam.y/PreScaleY); //Получаем параметры для растяжения картинок на экране
+	//Получаем параметры для растяжения картинок на экране
+	Vector2f scale((float)windowParam.x/PreScaleX, (float)windowParam.y/PreScaleY); 
 	std::cout << scale.x << ' ' << scale.y;
-	
-	sf::Cursor cursor; //Устанавливаем простой курсор
-	if (cursor.loadFromSystem(sf::Cursor::Arrow)) 
-		window.setMouseCursor(cursor);
-	
-	Texture SoloGameTexture, MultiGameTexture, SettingsTexture, ExitTexture, MMBackgroundTexture; //Текстуры для главного меню
+
+	//Текстуры для главного меню
+	Texture SoloGameTexture, MultiGameTexture, SettingsTexture, ExitTexture, MMBackgroundTexture; 
 	SoloGameTexture.loadFromFile("images/SoloGameBt.png");
 	MultiGameTexture.loadFromFile("images/MultiplayerBt.png");
 	SettingsTexture.loadFromFile("images/SettingsBt.png");
@@ -36,21 +37,20 @@ unsigned short int MenuFunc(RenderWindow& window) {
 	MMBackgroundTexture.loadFromFile("images/MainmenuBg.jpg");
 	Sprite SoloButton(SoloGameTexture), MultiplayerButton(MultiGameTexture), ExitButton(ExitTexture), SettingsButton(SettingsTexture), MainMenuBg(MMBackgroundTexture);
 
-	Texture MPBackgroundTexture; //Текстуры для меню мультиплеера
-	MPBackgroundTexture.loadFromFile("images/MultiplayerBg.jpg");
-	Sprite MultiPlayerBg(MPBackgroundTexture);
-
-	Texture SettingsBackgroundTexture; //Текстуры для настроек
+	//Текстуры для настроек
+	Texture SettingsBackgroundTexture; 
 	SettingsBackgroundTexture.loadFromFile("images/SettingsBg.jpg");
 	Sprite SettingsBg(SettingsBackgroundTexture);
 
-	Texture YesTexture, NoTexture, SureTexture; //Текстуры для подтверждения о выходе
+	//Текстуры для подтверждения о выходе
+	Texture YesTexture, NoTexture, SureTexture; 
 	YesTexture.loadFromFile("images/YesBt.png");
 	NoTexture.loadFromFile("images/NoBt.png");
 	SureTexture.loadFromFile("images/SureBt.png");
 	Sprite YesButton(YesTexture), NoButton(NoTexture), SureQuestion(SureTexture);
 
-	Texture ReturnToMainmenuTexture; //Текстуры для кнопки возврата в главное меню
+	//Текстуры для кнопки возврата в главное меню
+	Texture ReturnToMainmenuTexture; 
 	ReturnToMainmenuTexture.loadFromFile("images/ReturnBt.png");
 	Sprite ReturnMMButton(ReturnToMainmenuTexture);
 
@@ -75,9 +75,9 @@ unsigned short int MenuFunc(RenderWindow& window) {
 	SettingsButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.45));
 	ExitButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.75));
 	NoButton.setPosition(trunc(windowParam.x * 0.58), trunc(windowParam.y * 0.60));
-	YesButton.setPosition(trunc(windowParam.x * 0.3), trunc(windowParam.y * 0.60));
+	YesButton.setPosition(trunc(windowParam.x * 0.33), trunc(windowParam.y * 0.60));
 	SureQuestion.setPosition(trunc(windowParam.x * 0.25), trunc(windowParam.y * 0.4));
-	ReturnMMButton.setPosition(trunc(windowParam.x * 0.75), trunc(windowParam.y * 0.75));
+	ReturnMMButton.setPosition(trunc(windowParam.x * 0.75), trunc(windowParam.y * 0.90));
 	
 	//Положение фона на страницах
 	SettingsBg.setPosition(0, 0);
@@ -85,7 +85,6 @@ unsigned short int MenuFunc(RenderWindow& window) {
 	MultiPlayerBg.setPosition(0, 0);
 
 	
-
 	///////////////////////////////////МЕНЮ///////////////////////////////////
 	//0 - выход, 1 - главное меню, 2 - один игрок, 3 - сетевая  4 - настройки
 	int menuNum = 1;
@@ -99,47 +98,44 @@ unsigned short int MenuFunc(RenderWindow& window) {
 			SettingsButton.setColor(Color::White);
 			ExitButton.setColor(Color::White);
 
-			if (SoloButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			//Изменение цвета при наведении указателя
+			if (MouseOnSprite(window,SoloButton))
 				SoloButton.setColor(Color::Green);
-			}
-			if (MultiplayerButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			else if (MouseOnSprite(window, MultiplayerButton))
 				MultiplayerButton.setColor(Color::Green);
-			}
-			if (SettingsButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			else if (MouseOnSprite(window, SettingsButton))
 				SettingsButton.setColor(Color::Green);
-			}
-			if (ExitButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			else if (MouseOnSprite(window, ExitButton))
 				ExitButton.setColor(Color::Red);
-			}
 
-			if (Mouse::isButtonPressed(Mouse::Left) && SoloButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
-				//Начало игры
+			//Поведение при нажании мыши
+			if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, SoloButton)) //Переход к началу игры
 				menuNum = 2;
-			}
-			if (Mouse::isButtonPressed(Mouse::Left) && MultiplayerButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
-				//Переход в сетевую игру
+			else if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, MultiplayerButton)) //Переход в меню сетевой игры
 				menuNum = 3;
-			}
-			if (Mouse::isButtonPressed(Mouse::Left) && SettingsButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			else if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, SettingsButton)) //Переход к меню настроек
 				menuNum = 4;
-			}
-			if (Mouse::isButtonPressed(Mouse::Left) && ExitButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
-				//
+			else if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, ExitButton)) //Переход к диалогу выхода
 				menuNum = 0;
-			}
+
+			//Нажатие на esc
+			if (Keyboard::isKeyPressed(Keyboard::Escape)) menuNum = 0;
+
 			window.draw(MainMenuBg);
 			window.draw(SoloButton);
 			window.draw(MultiplayerButton);
 			window.draw(ExitButton);
 			window.draw(SettingsButton);
 		}
+
 		//Меню 2 - одиночная
 		if (menuNum == 2) {
 			return 2;
 		}
 		//Меню 3 - сетевая
 		if (menuNum == 3) {
-			MultiPlayerBg.setColor(Color::White);
+			return 3;
+			/*MultiPlayerBg.setColor(Color::White);
 			ReturnMMButton.setColor(Color::White);
 			if (Mouse::isButtonPressed(Mouse::Left) && ReturnMMButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
 				menuNum = 1;
@@ -148,46 +144,52 @@ unsigned short int MenuFunc(RenderWindow& window) {
 				ReturnMMButton.setColor(Color::Red);
 			}
 			window.draw(MultiPlayerBg);
-			window.draw(ReturnMMButton);
+			window.draw(ReturnMMButton);*/
 		}
 		//Меню 4 - настройки
 		if (menuNum == 4) {
+
 			ReturnMMButton.setColor(Color::White);
-			if (Mouse::isButtonPressed(Mouse::Left) && ReturnMMButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
-				menuNum = 1;
-			}
-			if (ReturnMMButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			if (MouseOnSprite(window, ReturnMMButton)) {
 				ReturnMMButton.setColor(Color::Red);
+				if (Mouse::isButtonPressed(Mouse::Left)) //Переход в главное меню
+					menuNum = 1;
 			}
+
+			//Нажание на esc
+			if (Keyboard::isKeyPressed(Keyboard::Escape)) menuNum = 1;
+
 			window.draw(SettingsBg);
 			window.draw(ReturnMMButton);
 		}
 
 		//Условия выхода
-		if (menuNum == 0 || Keyboard::isKeyPressed(Keyboard::Escape)){
+		if (menuNum == 0) {
 			YesButton.setColor(Color::White);
 			NoButton.setColor(Color::White);
-			if (YesButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+
+			//Изменение цвета при наведении
+			if (MouseOnSprite(window, YesButton))
 				YesButton.setColor(Color::Red);
-			}
-			if (NoButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			else if (MouseOnSprite(window, NoButton))
 				NoButton.setColor(Color::Green);
-			}
-			if (Mouse::isButtonPressed(Mouse::Left) && YesButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
-				window.close();
+
+			//Поведение при нажатии
+			if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, YesButton)) {
 				return 0;
 			}
-			if (Mouse::isButtonPressed(Mouse::Left) && NoButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
+			else if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, NoButton))
 				menuNum = 1;
-			}
+
 			window.draw(NoButton);
 			window.draw(YesButton);
 			window.draw(SureQuestion);
 		}
+
 		if (event.type == sf::Event::Closed) {
-			window.close();
 			return 0;
 		}
+
 		window.display();
 	}
 }

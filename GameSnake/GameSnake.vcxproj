@@ -146,9 +146,10 @@
     <ClCompile Include="Point2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CoopMenu.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Painter.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Player.h" />
