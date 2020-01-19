@@ -14,7 +14,7 @@ void gameTic(Player& player) {
 
 int main()
 {
-    RenderWindow MenuWindow(VideoMode(1080, 720), "MENU", sf::Style::Fullscreen);
+    RenderWindow MenuWindow(VideoMode(1080, 720), "MENU", sf::Style::Close);
     unsigned short int answer = MenuFunc(MenuWindow);//вызов меню
     return 0;
 
