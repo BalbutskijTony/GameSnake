@@ -15,12 +15,16 @@ class Map
     void setWidth(const size_t width);
     void setHeight(const size_t height);
 
-    const std::vector<Point2d>& getWalls() const;
+    void initWalls();
+
+    const std::vector<Point2d>& getMainWalls() const;
+    const std::vector<Point2d>& getAdditionWalls() const;
     void addWall(const Point2d& newWall);
 private:
     size_t width;
     size_t height;
 
-    std::vector<Point2d> walls;
+    std::vector<Point2d> mainWalls;
+    std::vector<Point2d> additionWalls;
 };
 

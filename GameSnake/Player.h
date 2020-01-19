@@ -5,6 +5,17 @@
 
 #define DEFAULT_SNAKE_SIZE 3
 
+enum class AppleType
+{
+	NO_BONUS = 0,
+	SPEED_UP = 1,
+	SPEED_DOWN = 2,
+	DELETE_HALF = 3,
+	ADD_10_APPLE = 4,
+	MAX_VALUE = 4
+};
+
+
 class Player
 {
 public:
@@ -16,10 +27,20 @@ public:
 
 	const std::list<Point2d>& getBody() const;
 	
+	bool getAlive() const;
+	void setAlive(const bool isAlive);
+
 	void move();
 	void addSegment();
+
+	void addAbility(const AppleType newAbylity);
+	const AppleType* getAbilites() const;
+	bool dropAbility(const int index);
 private:
 	Point2d direction;
 	std::list<Point2d> body;
+	AppleType abilites[6] = { AppleType::NO_BONUS, AppleType::NO_BONUS, AppleType::NO_BONUS,
+							AppleType::NO_BONUS, AppleType::NO_BONUS, AppleType::NO_BONUS };
+	bool isAlive = true;
 };
 
