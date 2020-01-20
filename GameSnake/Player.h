@@ -37,11 +37,15 @@ public:
 	void addAbility(const AppleType newAbylity);
 	const AppleType* getAbilites() const;
 	bool dropAbility(const int index);
+
+	bool getIsPlayerMove() const;
+	void setIsPlayerMove(const bool isMove);
 private:
 	Point2d direction;
 	std::list<Point2d> body;
 	AppleType abilites[6] = { AppleType::NO_BONUS, AppleType::NO_BONUS, AppleType::NO_BONUS,
 							AppleType::NO_BONUS, AppleType::NO_BONUS, AppleType::NO_BONUS };
 	bool isAlive = true;
+	bool isPlyerMove = false;
 };
 

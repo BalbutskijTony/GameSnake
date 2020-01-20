@@ -130,3 +130,11 @@ const Player& Game::getPlayer(const int playerIndex) const {
 const std::vector<Player>& Game::getAllPlayers() const {
     return players;
 }
+
+void Game::setIsPlayerMove(const int playerIndex, const bool isMove) {
+    players[playerIndex].setIsPlayerMove(isMove);
+}
+
+void Game::setAlive(const int playerIndex, const bool isAlive) {
+    players[playerIndex].setAlive(isAlive);
+}

@@ -72,3 +72,11 @@ Player::Player(const Point2d& startPosition, const Point2d& startDirection) {
 	for (int curSeg = DEFAULT_SNAKE_SIZE - 2; curSeg >= 0; curSeg--)
 		body.emplace_back(startPoint + direction * curSeg);
 }
+
+bool Player::getIsPlayerMove() const {
+	return isPlyerMove;
+}
+
+void Player::setIsPlayerMove(const bool isMove) {
+	isPlyerMove = isMove;
+}

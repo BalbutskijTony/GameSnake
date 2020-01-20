@@ -28,9 +28,11 @@ public:
     const std::vector<Player>& getAllPlayers() const;
 
     bool setNewDirection(const int playerIndex, const Point2d& newDirection);
+    void setIsPlayerMove(const int playerIndex, const bool isMove);
+    void setAlive(const int playerIndex, const bool isAlive);
 
     bool isPlayerCollide(const int playerIndex) const;
-    void gameTic(/*const Map& map,*/ /*Player& player,*/ /*std::list<Point2d>& apples*/);
+    void gameTic();
 private:
     bool isPointFree(const Point2d& newPoint) const;
     const int generateRandInt(const int from, const int to) const;
