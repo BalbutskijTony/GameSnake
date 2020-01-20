@@ -20,6 +20,7 @@ class Player
 {
 public:
 	Player();
+	Player(const Point2d& startPosition, const Point2d& startDirection);
 	~Player() = default;
 
 	const Point2d& getDirection() const;

@@ -10,7 +10,7 @@ public:
     void drawMap(const Map& map, sf::RenderWindow& window) const;
     void drawWalls(const Map& map, sf::RenderWindow& window) const;
     void drawPlayer(const Player& player, const Map& map, sf::RenderWindow& window) const;
-    void drawApples(const std::list<Point2d>& apples, const Map& map, sf::RenderWindow& window) const;
+    void drawApples(const std::list<std::pair<Point2d, AppleType>>& apples, const Map& map, sf::RenderWindow& window) const;
 private:
 };
 
