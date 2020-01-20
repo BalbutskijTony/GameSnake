@@ -33,7 +33,7 @@ public:
 
     bool isPlayerCollide(const int playerIndex) const;
     void gameTic();
-private:
+protected:
     bool isPointFree(const Point2d& newPoint) const;
     const int generateRandInt(const int from, const int to) const;
     std::vector<Player> players;

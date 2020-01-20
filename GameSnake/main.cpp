@@ -5,7 +5,8 @@
 #include "Game.h"
 #include "Painter.h"
 
-enum class MoveAction
+
+enum struct MoveAction
 {
     LEFT,
     RIGTH,
@@ -14,7 +15,7 @@ enum class MoveAction
     NO_ACTION
 };
 
-enum class AbilityAction
+enum struct AbilityAction
 {
     USE_1_ABILITY,
     USE_2_ABILITY,
@@ -89,14 +90,13 @@ int main()
             
             if (event.type == sf::Event::KeyPressed)
             {
-                // Получаем нажатую клавишу - выполняем соответствующее действие
                 if (event.key.code == sf::Keyboard::Escape) window.close();
                 if (isGame) {
                     buttonClickHandler(controllers, event.key.code, newGame);
                 }
             }
         }
-        // TODO: Переделать
+
         // TODO: Разобраться в чём отличие wait_for от wait_until
         if (isGame) {
             std::future<void> nextTic = std::async([&newGame] { newGame.gameTic(); });
