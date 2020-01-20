@@ -12,9 +12,13 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1024, 512), "SFML Snake");
     Map map(64, 32);
     map.initWalls();
-    //std::list<Point2d> apples;
+    
     Painter painter;
-    //Player player;
+    
+    Game newGame(map);
+    int curPlayerIndex = newGame.addNewPlayer(Player(Point2d(5, 5), Point2d(1, 0)));
+    
+
     sf::Event event;
     bool isGame = true;
     bool isPlayerMove = false;
@@ -25,10 +29,10 @@ int main()
     while (window.isOpen())
     {
         startGameTic = std::chrono::steady_clock::now();
-       
+        isPlayerMove = false;
         while (window.pollEvent(event))
         {
-            isPlayerMove = false;
+            
             if (event.type == sf::Event::Closed)
                 window.close();
             
@@ -38,20 +42,20 @@ int main()
                 if (event.key.code == sf::Keyboard::Escape) window.close();
                 if (isGame) {
                     if (event.key.code == sf::Keyboard::Left && !isPlayerMove) {
-                        move(player, Point2d(-1, 0));
-                        isPlayerMove = true;
+                        if(newGame.setNewDirection(curPlayerIndex, Point2d(-1, 0)))
+                            isPlayerMove = true;
                     }
                     if (event.key.code == sf::Keyboard::Right && !isPlayerMove) {
-                        move(player, Point2d(1, 0));
-                        isPlayerMove = true;
+                        if (newGame.setNewDirection(curPlayerIndex, Point2d(1, 0)))
+                            isPlayerMove = true;
                     }
                     if (event.key.code == sf::Keyboard::Up && !isPlayerMove) {
-                        move(player, Point2d(0, -1));
-                        isPlayerMove = true;
+                        if (newGame.setNewDirection(curPlayerIndex, Point2d(0, -1)))
+                            isPlayerMove = true;
                     }
                     if (event.key.code == sf::Keyboard::Down && !isPlayerMove) {
-                        move(player, Point2d(0, 1));
-                        isPlayerMove = true;
+                        if (newGame.setNewDirection(curPlayerIndex, Point2d(0, 1)))
+                            isPlayerMove = true;
                     }
                 }
             }
@@ -59,18 +63,18 @@ int main()
         // TODO: Переделать
         // TODO: Разобраться в чём отличие wait_for от wait_until
         if (isGame) {
-            std::future<void> nextTic = std::async([&player, &map, &apples] { gameTic(map, player, apples); });
-            nextTic.wait_for(std::chrono::milliseconds(100));
+            std::future<void> nextTic = std::async([&newGame] { newGame.gameTic(); });
+            nextTic.wait_for(std::chrono::milliseconds(200));
             window.clear();
             painter.drawGrid(map, window);
-            painter.drawPlayer(player, map, window);
-            painter.drawApples(apples, map, window);
-            painter.drawWalls(map, window);
+            painter.drawPlayer(newGame.getPlayer(curPlayerIndex), newGame.getMap(), window);
+            painter.drawApples(newGame.getApples(), newGame.getMap(), window);
+            painter.drawWalls(newGame.getMap(), window);
             window.display();
 
-            if (isCollide(map, player)) isGame = false;
+            if (newGame.isPlayerCollide(curPlayerIndex)) isGame = false;
             endGameTic = std::chrono::steady_clock::now();
-            std::this_thread::sleep_until(startGameTic + std::chrono::milliseconds(100));
+            std::this_thread::sleep_until(startGameTic + std::chrono::milliseconds(200));
         }
 
         

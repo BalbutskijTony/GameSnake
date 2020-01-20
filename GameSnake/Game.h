@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "Player.h"
 
+#undef DEBUG
 #ifdef DEBUG
 #include <iostream>
 #endif 
@@ -9,6 +10,9 @@
 class Game
 {
 public:
+    Game(const Map& map);
+    ~Game() = default;
+
     void setNewMap(const Map& newMap);
     const Map& getMap() const;
 
@@ -20,12 +24,13 @@ public:
     const int addNewPlayer(const Player& newPlayer);
     bool isPlayerAlive(const int playerIndex) const;
 
+    const Player& getPlayer(const int playerIndex) const;
+    const std::vector<Player>& getAllPlayers() const;
+
     bool setNewDirection(const int playerIndex, const Point2d& newDirection);
 
     bool isPlayerCollide(const int playerIndex) const;
-    void initWalls(/*Map& map*/);// ->Map
     void gameTic(/*const Map& map,*/ /*Player& player,*/ /*std::list<Point2d>& apples*/);
-    void move(Player& player, const Point2d& newDirection);//->private
 private:
     bool isPointFree(const Point2d& newPoint) const;
     const int generateRandInt(const int from, const int to) const;
