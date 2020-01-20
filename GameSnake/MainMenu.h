@@ -6,11 +6,14 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#define PreScaleX 1280
+#define PreScaleY 720
 
 //TODO Разобраться с очисткой данных
 //TODO Хранить все кнопки для каждого из пунктов в одной текстуре
 //TODO Сделать однократное нажатие на мышку
 
+using namespace sf;
 
 //Проверка положения мышки над спарайтом
 bool MouseOnSprite(RenderWindow& window, Sprite sprite) {
@@ -66,7 +69,6 @@ unsigned short int MainMenu(RenderWindow& window) {
 	YesButton.setScale(scale.x*0.5, scale.y*0.5);
 	NoButton.setScale(scale.x * 0.5, scale.y * 0.5);
 	SureQuestion.setScale(scale.x, scale.y);
-	MultiPlayerBg.setScale(scale.x, scale.y);
 	SettingsBg.setScale(scale.x, scale.y);
 
 	//Настраиваем положение кнопок в меню
@@ -82,9 +84,7 @@ unsigned short int MainMenu(RenderWindow& window) {
 	//Положение фона на страницах
 	SettingsBg.setPosition(0, 0);
 	MainMenuBg.setPosition(0, 0);
-	MultiPlayerBg.setPosition(0, 0);
 
-	
 	///////////////////////////////////МЕНЮ///////////////////////////////////
 	//0 - выход, 1 - главное меню, 2 - один игрок, 3 - сетевая  4 - настройки
 	int menuNum = 1;
@@ -135,16 +135,6 @@ unsigned short int MainMenu(RenderWindow& window) {
 		//Меню 3 - сетевая
 		if (menuNum == 3) {
 			return 3;
-			/*MultiPlayerBg.setColor(Color::White);
-			ReturnMMButton.setColor(Color::White);
-			if (Mouse::isButtonPressed(Mouse::Left) && ReturnMMButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
-				menuNum = 1;
-			}
-			if (ReturnMMButton.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) {
-				ReturnMMButton.setColor(Color::Red);
-			}
-			window.draw(MultiPlayerBg);
-			window.draw(ReturnMMButton);*/
 		}
 		//Меню 4 - настройки
 		if (menuNum == 4) {
