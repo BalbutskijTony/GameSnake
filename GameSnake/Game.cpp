@@ -69,7 +69,7 @@ bool Game::setNewDirection(const int playerIndex, const Point2d& newDirection) {
     else std::cout << "Set new direction. return true" << std::endl;
 #endif
     if (scalarMult < 0) return false;
-    if (scalarMult > 0) return true;
+    if (scalarMult > 0) return false;
     players[playerIndex].setDirection(newDirection);
     return true;
 }
