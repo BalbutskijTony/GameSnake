@@ -26,36 +26,18 @@ enum class AbilityAction
 
 class PlayerController {
 public:
-    std::pair<MoveAction, sf::Keyboard::Key> left;
-    std::pair<MoveAction, sf::Keyboard::Key> right;
-    std::pair<MoveAction, sf::Keyboard::Key> down;
-    std::pair<MoveAction, sf::Keyboard::Key> up;
+    std::pair<sf::Keyboard::Key, Point2d> commands[4];
 };
 
 void buttonClickHandler(const std::vector<PlayerController>& controllers, const sf::Keyboard::Key button, Game& game) {
     for (int curPlayerIndex = 0; curPlayerIndex < controllers.size(); curPlayerIndex++) {
-        if (button == controllers[curPlayerIndex].left.second && !game.getPlayer(curPlayerIndex).getIsPlayerMove()) {
-            if (game.setNewDirection(curPlayerIndex, Point2d(-1, 0))) {
-                game.setIsPlayerMove(curPlayerIndex, true);
-                return;
-            }
-        }
-        if (button == controllers[curPlayerIndex].right.second && !game.getPlayer(curPlayerIndex).getIsPlayerMove()) {
-            if (game.setNewDirection(curPlayerIndex, Point2d(1, 0))) {
-                game.setIsPlayerMove(curPlayerIndex, true);
-                return;
-            }
-        }
-        if (button == controllers[curPlayerIndex].up.second && !game.getPlayer(curPlayerIndex).getIsPlayerMove()) {
-            if (game.setNewDirection(curPlayerIndex, Point2d(0, -1))) {
-                game.setIsPlayerMove(curPlayerIndex, true);
-                return;
-            }
-        }
-        if (button == controllers[curPlayerIndex].down.second && !game.getPlayer(curPlayerIndex).getIsPlayerMove()) {
-            if (game.setNewDirection(curPlayerIndex, Point2d(0, 1))) {
-                game.setIsPlayerMove(curPlayerIndex, true);
-                return;
+        for (int commandIndex = 0; commandIndex < 4; commandIndex++) {
+            if (button == controllers[curPlayerIndex].commands[commandIndex].first
+                && !game.getPlayer(curPlayerIndex).getIsPlayerMove()) {
+                if (game.setNewDirection(curPlayerIndex, controllers[curPlayerIndex].commands[commandIndex].second)) {
+                    game.setIsPlayerMove(curPlayerIndex, true);
+                    return;
+                }
             }
         }
     }
@@ -75,15 +57,15 @@ int main()
     
     std::vector<PlayerController> controllers = { PlayerController(), PlayerController() };
 
-    controllers[0].down = std::make_pair(MoveAction::DOWN, sf::Keyboard::S);
-    controllers[0].left = std::make_pair(MoveAction::LEFT, sf::Keyboard::A);
-    controllers[0].right = std::make_pair(MoveAction::RIGTH, sf::Keyboard::D);
-    controllers[0].up = std::make_pair(MoveAction::UP, sf::Keyboard::W);
+    controllers[0].commands[0] = std::make_pair(sf::Keyboard::S, Point2d(0, 1));
+    controllers[0].commands[1] = std::make_pair(sf::Keyboard::A, Point2d(-1, 0));
+    controllers[0].commands[2] = std::make_pair(sf::Keyboard::D, Point2d(1, 0));
+    controllers[0].commands[3] = std::make_pair(sf::Keyboard::W, Point2d(0, -1));
 
-    controllers[1].down = std::make_pair(MoveAction::DOWN, sf::Keyboard::Down);
-    controllers[1].left = std::make_pair(MoveAction::LEFT, sf::Keyboard::Left);
-    controllers[1].right = std::make_pair(MoveAction::RIGTH, sf::Keyboard::Right);
-    controllers[1].up = std::make_pair(MoveAction::UP, sf::Keyboard::Up);
+    controllers[1].commands[0] = std::make_pair(sf::Keyboard::Down, Point2d(0, 1));
+    controllers[1].commands[1] = std::make_pair(sf::Keyboard::Left, Point2d(-1, 0));
+    controllers[1].commands[2] = std::make_pair(sf::Keyboard::Right, Point2d(1, 0));
+    controllers[1].commands[3] = std::make_pair(sf::Keyboard::Up, Point2d(0, -1));
 
 
 
