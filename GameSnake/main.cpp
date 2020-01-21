@@ -5,6 +5,38 @@
 #include "Game.h"
 #include "Painter.h"
 
+#define DEBUG
+
+#ifdef DEBUG
+#include <iostream>
+#endif // DEBUG
+
+
+class DeathMatchGame : public Game {
+public:
+    DeathMatchGame(const Map& map) : Game(map) {};
+    std::pair<bool, int> isWin() const;
+};
+
+std::pair<bool, int> DeathMatchGame::isWin() const {
+    int countPlayerLive = 0;
+    int lastPlayerAlive = -1;
+
+    for (int curPlayerIndex = 0; curPlayerIndex < players.size(); curPlayerIndex++) {
+        if (players[curPlayerIndex].getAlive()) {
+            
+            if (countPlayerLive == 0)
+                lastPlayerAlive = curPlayerIndex;
+            if (countPlayerLive > 0)
+                lastPlayerAlive = -1;
+
+            countPlayerLive++;
+        }
+    }
+
+    return std::make_pair(countPlayerLive < 2, lastPlayerAlive);
+}
+
 
 enum struct MoveAction
 {
@@ -52,7 +84,7 @@ int main()
     
     Painter painter;
     
-    Game newGame(map);
+    DeathMatchGame newGame(map);
     int player1Index = newGame.addNewPlayer(Player(Point2d(5, 5), Point2d(1, 0)));
     int player2Index = newGame.addNewPlayer(Player(Point2d(55, 25), Point2d(-1, 0)));
     
@@ -121,7 +153,22 @@ int main()
             std::this_thread::sleep_until(startGameTic + std::chrono::milliseconds(200));
         }
 
-        
+        if (newGame.isWin().first && isGame) {
+            isGame = false;
+            if (newGame.isWin().second == -1) {
+                // Нечья
+#ifdef DEBUG
+                std::cout << "ALL ARE DEATH!!! GAME OVER" << std::endl;
+#endif
+            }
+            else {
+                // Игрок под номером newGame.isWin().second победил
+#ifdef DEBUG
+                std::cout << "Player " << newGame.isWin().second + 1 << " won!" << std::endl;
+#endif
+            }
+
+        }
     }
     return 0;
 }
