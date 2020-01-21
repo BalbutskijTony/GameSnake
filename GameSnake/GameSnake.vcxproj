@@ -148,13 +148,17 @@
   <ItemGroup>
     <ClInclude Include="CoopMenu.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="HostMenu.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Painter.h" />
-    <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="UtilityFunctions.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point2d.h" />
+    <ClInclude Include="SearchMenu.h" />
     <ClInclude Include="SnakeAnimation.h" />
+    <ClInclude Include="Textures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,13 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <Windows.h>
-#include "Math.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-
-#define PreScaleX 1280
-#define PreScaleY 720
+#include "UtilityFunctions.h"
 
 //TODO Разобраться с очисткой данных
 //TODO Хранить все кнопки для каждого из пунктов в одной текстуре
@@ -15,22 +8,8 @@
 
 using namespace sf;
 
-//Проверка положения мышки над спарайтом
-bool MouseOnSprite(RenderWindow& window, Sprite sprite) {
-	if (sprite.getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y)) return true;
-	else return false;
-}
-
 unsigned short int MainMenu(RenderWindow& window) {
 	
-	//Берем настройки окна
-	Vector2u windowParam = window.getSize(); 
-	std::cout << windowParam.x << ' ' << windowParam.y << std::endl;
-	
-	//Получаем параметры для растяжения картинок на экране
-	Vector2f scale((float)windowParam.x/PreScaleX, (float)windowParam.y/PreScaleY); 
-	std::cout << scale.x << ' ' << scale.y;
-
 	//Текстуры для главного меню
 	Texture SoloGameTexture, MultiGameTexture, SettingsTexture, ExitTexture, MMBackgroundTexture; 
 	SoloGameTexture.loadFromFile("images/SoloGameBt.png");
@@ -56,30 +35,28 @@ unsigned short int MainMenu(RenderWindow& window) {
 	Texture ReturnToMainmenuTexture; 
 	ReturnToMainmenuTexture.loadFromFile("images/ReturnBt.png");
 	Sprite ReturnMMButton(ReturnToMainmenuTexture);
-
-	//Другие спрайты 
 	
 	//Растягиваем спрайты под окно
-	SoloButton.setScale(scale.x, scale.y); 
-	MultiplayerButton.setScale(scale.x, scale.y);
-	SettingsButton.setScale(scale.x, scale.y);
-	MainMenuBg.setScale(scale.x, scale.y);
-	ExitButton.setScale(scale.x, scale.y);
-	ReturnMMButton.setScale(scale.x*0.5, scale.y*0.5);
-	YesButton.setScale(scale.x*0.5, scale.y*0.5);
-	NoButton.setScale(scale.x * 0.5, scale.y * 0.5);
-	SureQuestion.setScale(scale.x, scale.y);
-	SettingsBg.setScale(scale.x, scale.y);
+	SoloButton.setScale(Utility::scale.x, Utility::scale.y);
+	MultiplayerButton.setScale(Utility::scale.x, Utility::scale.y);
+	SettingsButton.setScale(Utility::scale.x, Utility::scale.y);
+	MainMenuBg.setScale(Utility::scale.x, Utility::scale.y);
+	ExitButton.setScale(Utility::scale.x, Utility::scale.y);
+	ReturnMMButton.setScale(Utility::scale.x*0.5, Utility::scale.y*0.5);
+	YesButton.setScale(Utility::scale.x*0.5, Utility::scale.y*0.5);
+	NoButton.setScale(Utility::scale.x * 0.5, Utility::scale.y * 0.5);
+	SureQuestion.setScale(Utility::scale.x, Utility::scale.y);
+	SettingsBg.setScale(Utility::scale.x, Utility::scale.y);
 
 	//Настраиваем положение кнопок в меню
-	SoloButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.05));
-	MultiplayerButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.25));
-	SettingsButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.45));
-	ExitButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.75));
-	NoButton.setPosition(trunc(windowParam.x * 0.58), trunc(windowParam.y * 0.60));
-	YesButton.setPosition(trunc(windowParam.x * 0.33), trunc(windowParam.y * 0.60));
-	SureQuestion.setPosition(trunc(windowParam.x * 0.25), trunc(windowParam.y * 0.4));
-	ReturnMMButton.setPosition(trunc(windowParam.x * 0.75), trunc(windowParam.y * 0.90));
+	SoloButton.setPosition(trunc(Utility::windowParam.x * 0.05), trunc(Utility::windowParam.y * 0.05));
+	MultiplayerButton.setPosition(trunc(Utility::windowParam.x * 0.05), trunc(Utility::windowParam.y * 0.25));
+	SettingsButton.setPosition(trunc(Utility::windowParam.x * 0.05), trunc(Utility::windowParam.y * 0.45));
+	ExitButton.setPosition(trunc(Utility::windowParam.x * 0.05), trunc(Utility::windowParam.y * 0.75));
+	NoButton.setPosition(trunc(Utility::windowParam.x * 0.58), trunc(Utility::windowParam.y * 0.60));
+	YesButton.setPosition(trunc(Utility::windowParam.x * 0.33), trunc(Utility::windowParam.y * 0.60));
+	SureQuestion.setPosition(trunc(Utility::windowParam.x * 0.25), trunc(Utility::windowParam.y * 0.4));
+	ReturnMMButton.setPosition(trunc(Utility::windowParam.x * 0.75), trunc(Utility::windowParam.y * 0.90));
 	
 	//Положение фона на страницах
 	SettingsBg.setPosition(0, 0);
@@ -91,6 +68,7 @@ unsigned short int MainMenu(RenderWindow& window) {
 	sf::Event event;
 	while (window.waitEvent(event))
 	{
+		window.clear();
 		//Меню 1
 		if (menuNum == 1) {
 			SoloButton.setColor(Color::White);
@@ -119,8 +97,11 @@ unsigned short int MainMenu(RenderWindow& window) {
 				menuNum = 0;
 
 			//Нажатие на esc
-			if (Keyboard::isKeyPressed(Keyboard::Escape)) menuNum = 0;
-
+			if (Keyboard::isKeyPressed(Keyboard::Escape)) { 
+				wait(200);
+				menuNum = 0; 
+			}
+			
 			window.draw(MainMenuBg);
 			window.draw(SoloButton);
 			window.draw(MultiplayerButton);
@@ -147,7 +128,10 @@ unsigned short int MainMenu(RenderWindow& window) {
 			}
 
 			//Нажание на esc
-			if (Keyboard::isKeyPressed(Keyboard::Escape)) menuNum = 1;
+			if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(200));  
+				menuNum = 1;
+			}
 
 			window.draw(SettingsBg);
 			window.draw(ReturnMMButton);
@@ -179,7 +163,6 @@ unsigned short int MainMenu(RenderWindow& window) {
 		if (event.type == sf::Event::Closed) {
 			return 0;
 		}
-
 		window.display();
 	}
 }

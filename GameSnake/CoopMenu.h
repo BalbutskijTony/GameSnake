@@ -1,22 +1,11 @@
 #pragma once
 
-#include "MainMenu.h"
-
-#define PreScaleX 1280
-#define PreScaleY 720
+#include "UtilityFunctions.h"
 
 using namespace sf;
 
 unsigned short int CoopMenu(RenderWindow& window) {
 	
-	//Берем настройки окна
-	Vector2u windowParam = window.getSize();
-	std::cout << windowParam.x << ' ' << windowParam.y << std::endl;
-
-	//Получаем параметры для растяжения картинок на экране
-	Vector2f scale((float)windowParam.x / PreScaleX, (float)windowParam.y / PreScaleY);
-	std::cout << scale.x << ' ' << scale.y;
-
 	//Текстуры для меню мультиплеера
 	Texture MPBackgroundTexture, MPHostTexture, MPSearchTexture;
 	MPSearchTexture.loadFromFile("images/SearchBt.png");
@@ -30,15 +19,15 @@ unsigned short int CoopMenu(RenderWindow& window) {
 	Sprite ReturnMMButton(ReturnToMainmenuTexture);
 
 	//Растягиваем спрайты под окно
-	MultiPlayerBg.setScale(scale.x, scale.y);
-	CreateServerButton.setScale(scale.x, scale.y);
-	SearchButton.setScale(scale.x, scale.y);
-	ReturnMMButton.setScale(scale.x*0.5, scale.y*0.5);
+	MultiPlayerBg.setScale(Utility::scale.x, Utility::scale.y);
+	CreateServerButton.setScale(Utility::scale.x, Utility::scale.y);
+	SearchButton.setScale(Utility::scale.x, Utility::scale.y);
+	ReturnMMButton.setScale(Utility::scale.x*0.5, Utility::scale.y*0.5);
 
 	//Настраиваем положение кнопок в меню
-	CreateServerButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.05));
-	SearchButton.setPosition(trunc(windowParam.x * 0.05), trunc(windowParam.y * 0.25));
-	ReturnMMButton.setPosition(trunc(windowParam.x * 0.75), trunc(windowParam.y * 0.90));
+	CreateServerButton.setPosition(trunc(Utility::windowParam.x * 0.05), trunc(Utility::windowParam.y * 0.05));
+	SearchButton.setPosition(trunc(Utility::windowParam.x * 0.05), trunc(Utility::windowParam.y * 0.25));
+	ReturnMMButton.setPosition(trunc(Utility::windowParam.x * 0.75), trunc(Utility::windowParam.y * 0.90));
 
 	//Фоновый спрайт
 	MultiPlayerBg.setPosition(0,0);
@@ -59,7 +48,7 @@ unsigned short int CoopMenu(RenderWindow& window) {
 			ReturnMMButton.setColor(Color::Red);
 
 		//Поведение при нажании мыши
-		if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, CreateServerButton)) //Переход к запуску хоста
+		if (Mouse::isButtonPressed(Mouse::Left) &&	MouseOnSprite(window, CreateServerButton)) //Переход к запуску хоста
 			return 1;
 		else if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(window, SearchButton)) //Переход к поиску хостов
 			return 2;
@@ -67,7 +56,7 @@ unsigned short int CoopMenu(RenderWindow& window) {
 			return 0;
 
 		//Нажатие на esc
-		if (Keyboard::isKeyPressed(Keyboard::Escape)) return 0;
+		if (Keyboard::isKeyPressed(Keyboard::Escape)) { std::this_thread::sleep_for(std::chrono::milliseconds(200));  return 0; }
 
 		window.draw(MultiPlayerBg);
 		window.draw(CreateServerButton);
