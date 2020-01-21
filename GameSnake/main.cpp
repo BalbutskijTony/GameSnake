@@ -114,6 +114,8 @@ int main()
         startGameTic = std::chrono::steady_clock::now();
         for (int curPlayerIndex = 0; curPlayerIndex < controllers.size(); curPlayerIndex++)
             newGame.setIsPlayerMove(curPlayerIndex, false);
+
+        // Клиент начало
         while (window.pollEvent(event))
         {
             
@@ -128,6 +130,7 @@ int main()
                 }
             }
         }
+        // Клиент кончало
 
         // TODO: Разобраться в чём отличие wait_for от wait_until
         if (isGame) {
