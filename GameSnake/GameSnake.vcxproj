@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="net_part.h" />
     <ClInclude Include="Painter.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point2d.h" />
