@@ -42,6 +42,18 @@ void Painter::drawPlayer(const Player& player, const Map& map, sf::RenderWindow&
     }
 }
 
+void Painter::drawPlayer(const Point2d *player, size_t size, const Map& map, sf::RenderWindow& window) const {
+    float stepByX = static_cast<float>(window.getSize().x) / map.getWidth();
+    float stepByY = static_cast<float>(window.getSize().y) / map.getHeight();
+
+    for (size_t segment = 0; segment < size;segment++) {
+        sf::RectangleShape rectangle(sf::Vector2f(stepByX, stepByY));
+        rectangle.move(sf::Vector2f(stepByX * player[segment].x, stepByY * player[segment].y));
+        rectangle.setFillColor(sf::Color::Green);
+        window.draw(rectangle);
+    }
+}
+
 void Painter::drawApples(const std::list<std::pair<Point2d, AppleType>>& apples, const Map& map, sf::RenderWindow& window) const {
     float stepByX = static_cast<float>(window.getSize().x) / map.getWidth();
     float stepByY = static_cast<float>(window.getSize().y) / map.getHeight();

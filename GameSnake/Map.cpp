@@ -17,7 +17,7 @@ void Map::setHeight(const size_t height) {
 }
 
 void Map::initWalls() {
-    for (int curPoint = 1; curPoint < width - 1; curPoint++) {
+    for (int curPoint = 0; curPoint < width; curPoint++) {
         mainWalls.push_back(Point2d(curPoint, 0));
         mainWalls.push_back(Point2d(curPoint,height - 1));
     }
@@ -25,10 +25,6 @@ void Map::initWalls() {
         mainWalls.push_back(Point2d(0, curPoint));
         mainWalls.push_back(Point2d(width - 1, curPoint));
     }
-    mainWalls.push_back(Point2d(0, 0));
-    mainWalls.push_back(Point2d(0, height - 1));
-    mainWalls.push_back(Point2d(width - 1, 0));
-    mainWalls.push_back(Point2d(width - 1, height - 1));
 }
 
 const std::vector<Point2d>& Map::getMainWalls() const {
