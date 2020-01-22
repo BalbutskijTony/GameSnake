@@ -61,3 +61,22 @@ bool Player::dropAbility(const int index) {
 	abilites[index] = AppleType::NO_BONUS;
 	return true;
 }
+
+Player::Player(const Point2d& startPosition, const Point2d& startDirection) {
+	direction = startDirection;
+
+	Point2d startPoint;
+	startPoint = startPosition;
+
+	body.emplace_back(startPoint + direction * (DEFAULT_SNAKE_SIZE - 1));
+	for (int curSeg = DEFAULT_SNAKE_SIZE - 2; curSeg >= 0; curSeg--)
+		body.emplace_back(startPoint + direction * curSeg);
+}
+
+bool Player::getIsPlayerMove() const {
+	return isPlyerMove;
+}
+
+void Player::setIsPlayerMove(const bool isMove) {
+	isPlyerMove = isMove;
+}

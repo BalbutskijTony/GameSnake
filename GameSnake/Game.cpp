@@ -64,9 +64,12 @@ bool Game::setNewDirection(const int playerIndex, const Point2d& newDirection) {
     std::cout << "Old direction: " << players[playerIndex].getDirection().x << ", " << players[playerIndex].getDirection().y << std::endl;
     std::cout << "New direction: " << newDirection.x << ", " << newDirection.y << std::endl;
     std::cout << "Scalar: " << scalarMult << std::endl;
+    if (scalarMult < 0) std::cout << "return false" << std::endl;
+    else if (scalarMult > 0) std::cout << "return true" << std::endl;
+    else std::cout << "Set new direction. return true" << std::endl;
 #endif
     if (scalarMult < 0) return false;
-    if (scalarMult > 0) return true;
+    if (scalarMult > 0) return false;
     players[playerIndex].setDirection(newDirection);
     return true;
 }
@@ -90,7 +93,7 @@ bool Game::isPlayerCollide(const int playerIndex) const {
 
 
 void Game::gameTic() {
-    for (auto player : players) {
+    for (auto &player : players) {
         Point2d head = player.getBody().front() + player.getDirection();
         bool isEatAppleNow = false;
         for (auto apple : apples)
@@ -105,9 +108,33 @@ void Game::gameTic() {
     }
 
     int curCountPlayers = 0;
-    for (int i = 0; i < players.size(); i++)
-        if (players[i].getAlive()) curCountPlayers++;
+    for (int i = 0; i < players.size(); i++) {
+        if (players[i].getAlive()) {
+            curCountPlayers++;
+            //players[i].move();
+        }
+    }
 
     while(apples.size() < curCountPlayers)
         apples.push_back({ createNewApple(), static_cast<AppleType>(generateRandInt(0, static_cast<int>(AppleType::MAX_VALUE))) });
+}
+
+
+Game::Game(const Map& map) : map(map) {
+}
+
+const Player& Game::getPlayer(const int playerIndex) const {
+    return players[playerIndex];
+}
+
+const std::vector<Player>& Game::getAllPlayers() const {
+    return players;
+}
+
+void Game::setIsPlayerMove(const int playerIndex, const bool isMove) {
+    players[playerIndex].setIsPlayerMove(isMove);
+}
+
+void Game::setAlive(const int playerIndex, const bool isAlive) {
+    players[playerIndex].setAlive(isAlive);
 }

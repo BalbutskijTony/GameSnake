@@ -19,7 +19,8 @@ class Map
 
     const std::vector<Point2d>& getMainWalls() const;
     const std::vector<Point2d>& getAdditionWalls() const;
-    void addWall(const Point2d& newWall);
+    void addMainWall(const Point2d& newWall);
+    void addAdditionWall(const Point2d& newWall);
 private:
     size_t width;
     size_t height;

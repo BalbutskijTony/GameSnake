@@ -2,13 +2,13 @@
 
 void Painter::drawGrid(const Map& map, sf::RenderWindow& window) const {
     float stepByX = static_cast<float>(window.getSize().x) / map.getWidth();
-    float stepByY = static_cast<float>(window.getSize().y) / map.getHeight();
+    float stepByY = static_cast<float>(window.getSize().y) * 0.9 / map.getHeight();
 
     for (size_t col = 0; col <= map.getWidth(); col++) {
         sf::Vertex line[] =
         {
             sf::Vertex(sf::Vector2f(static_cast<float>(col)* stepByX, 0)),
-            sf::Vertex(sf::Vector2f(static_cast<float>(col)* stepByX, window.getSize().y))
+            sf::Vertex(sf::Vector2f(static_cast<float>(col)* stepByX, stepByY * map.getHeight()))
         };
 
         
@@ -30,10 +30,10 @@ void Painter::drawMap(const Map& map, sf::RenderWindow& window) const {
 
 }
 
-void Painter::drawPlayer(const Player& player, const Map& map, sf::RenderWindow& window) const {
+void Painter::drawPlayer(const Player& player, const Map& map, sf::RenderWindow& window) {
     float stepByX = static_cast<float>(window.getSize().x) / map.getWidth();
-    float stepByY = static_cast<float>(window.getSize().y) / map.getHeight();
-
+    float stepByY = static_cast<float>(window.getSize().y) * 0.9 / map.getHeight();
+    
     for (auto segment : player.getBody()) {
         sf::RectangleShape rectangle(sf::Vector2f(stepByX, stepByY));
         rectangle.move(sf::Vector2f(stepByX * segment.x, stepByY * segment.y));
@@ -42,13 +42,13 @@ void Painter::drawPlayer(const Player& player, const Map& map, sf::RenderWindow&
     }
 }
 
-void Painter::drawApples(const std::list<Point2d>& apples, const Map& map, sf::RenderWindow& window) const {
+void Painter::drawApples(const std::list<std::pair<Point2d, AppleType>>& apples, const Map& map, sf::RenderWindow& window) const {
     float stepByX = static_cast<float>(window.getSize().x) / map.getWidth();
-    float stepByY = static_cast<float>(window.getSize().y) / map.getHeight();
+    float stepByY = static_cast<float>(window.getSize().y) * 0.9 / map.getHeight();
 
     for (auto applePosition : apples) {
         sf::RectangleShape rectangle(sf::Vector2f(stepByX, stepByY));
-        rectangle.move(sf::Vector2f(stepByX * applePosition.x, stepByY * applePosition.y));
+        rectangle.move(sf::Vector2f(stepByX * applePosition.first.x, stepByY * applePosition.first.y));
         rectangle.setFillColor(sf::Color::Red);
         window.draw(rectangle);
     }
@@ -56,9 +56,9 @@ void Painter::drawApples(const std::list<Point2d>& apples, const Map& map, sf::R
 
 void Painter::drawWalls(const Map& map, sf::RenderWindow& window) const {
     float stepByX = static_cast<float>(window.getSize().x) / map.getWidth();
-    float stepByY = static_cast<float>(window.getSize().y) / map.getHeight();
-
-    for (auto wall : map.getWalls()) {
+    float stepByY = static_cast<float>(window.getSize().y) * 0.9 / map.getHeight();
+    // TODO: draw addition walls
+    for (auto wall : map.getMainWalls()) {
         sf::RectangleShape rectangle(sf::Vector2f(stepByX, stepByY));
         rectangle.move(sf::Vector2f(stepByX * wall.x, stepByY * wall.y));
         rectangle.setFillColor(sf::Color::Magenta);
