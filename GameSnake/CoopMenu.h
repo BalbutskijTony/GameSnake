@@ -33,8 +33,7 @@ unsigned short int CoopMenu(RenderWindow& window) {
 	MultiPlayerBg.setPosition(0,0);
 
 	int menuNum = 1;
-	sf::Event event;
-	while (window.waitEvent(event)) {
+	while (menuNum) {
 		CreateServerButton.setColor(Color::White);
 		SearchButton.setColor(Color::White);
 		ReturnMMButton.setColor(Color::White);

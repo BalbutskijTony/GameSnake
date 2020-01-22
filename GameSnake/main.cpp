@@ -8,6 +8,8 @@
 #include "MainMenu.h"
 #include "UtilityFunctions.h"
 #include "CoopMenu.h"
+#include "HostMenu.h"
+#include "SearchMenu.h"
 #include <SFML/Window.hpp>
 #include "Painter.h"
 #include "main.h"
@@ -93,15 +95,17 @@ int main() {
                 return 0;
             }
             case 2: {
+                wait(50);
                 //Тут должна вызываться одиночная игра
                 GameStarted = true;
                 break;
             }
             case 3: {
                 //Меню сетевой игры
+                wait(50);
                 int tmp = CoopMenu(Window);
-                /*if (tmp = 1) HostMenu(Window);
-                else if (tmp = 2) SearchMenu(Window);*/
+                if (tmp == 1) HostMenu(Window);
+                else if (tmp == 2) SearchMenu(Window);
                 break;
             }
             case 4: {
