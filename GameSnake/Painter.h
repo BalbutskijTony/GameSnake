@@ -13,5 +13,10 @@ public:
     void drawPlayer(const Point2d* player, size_t size, const Map& map, sf::RenderWindow& window) const;
     void drawApples(const std::list<std::pair<Point2d, AppleType>>& apples, const Map& map, sf::RenderWindow& window) const;
 private:
+    sf::Texture snakeTexture;
+    sf::Sprite snakeHead;
+    sf::Sprite snakeTail;
+    sf::Sprite snakeCorner; // Угловой сегмент
+    sf::Sprite snakeStraight; // Прямой сегмент
 };
 

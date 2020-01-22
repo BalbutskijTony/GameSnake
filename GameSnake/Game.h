@@ -32,7 +32,7 @@ public:
     void setAlive(const int playerIndex, const bool isAlive);
 
     bool isPlayerCollide(const int playerIndex) const;
-    void gameTic();
+    virtual void gameTic();
 protected:
     bool isPointFree(const Point2d& newPoint) const;
     const int generateRandInt(const int from, const int to) const;
