@@ -31,35 +31,53 @@ int main() {
     PauseMenu(Window, true);
     PauseMenu(Window, false);
 
-    sf::Text text;
-    sf::Font font;
-    font.loadFromFile("fonts/Jungle Land.ttf");
-    text.setPosition(0, 0);
-    // select the font
-    text.setFont(font); // font is a sf::Font
+    Texture SnakeSkinTexture;
+    SnakeSkinTexture.loadFromFile("images/Snake.png");
+    Sprite SnakeHead(SnakeSkinTexture), SnakeBody(SnakeSkinTexture), SnakeAngle(SnakeSkinTexture),  SnakeTail(SnakeSkinTexture);
+    SnakeHead.setTextureRect(sf::IntRect(0, 0, 64, 64));
+    SnakeBody.setTextureRect(sf::IntRect(64, 0, 64, 64));
+   /* SnakeAngle.setTextureRect(sf::IntRect(0, 0, 64, 64));
+    SnakeTail.setTextureRect(sf::IntRect(0, 0, 64, 64));
+    */
 
-    // set the string to display
-    text.setString("192.11.22..4.43.4.23432");
+    SnakeHead.setPosition(0, 150);
+    SnakeBody.setPosition(0, 0);
 
-    // set the character size
-    text.setCharacterSize(50); // in pixels, not points!
-
-    // set the color
-   
-
-    // set the text style
-    text.setStyle(sf::Text::Bold);
-
-    Window.display();
-
+    
     while (!Keyboard::isKeyPressed(Keyboard::Escape)) { 
-        LoadingAnimation(Window, trunc(Utility::windowParam.x * 0.70), trunc(Utility::windowParam.y * 0.70), (float)-0.01); 
-         text.setFillColor(sf::Color::Red);
-        if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(Window, text)){ text.setFillColor(sf::Color::Green);
-        }
-        Window.draw(text);
+        Window.draw(SnakeHead); 
+        Window.draw(SnakeBody);
         Window.display();
     }
+    //sf::Text text;
+    //sf::Font font;
+    //font.loadFromFile("fonts/Jungle Land.ttf");
+    //text.setPosition(0, 0);
+    //// select the font
+    //text.setFont(font); // font is a sf::Font
+
+    //// set the string to display
+    //text.setString("192.11.22..4.43.4.23432");
+
+    //// set the character size
+    //text.setCharacterSize(50); // in pixels, not points!
+
+    //// set the color
+   
+
+    //// set the text style
+    //text.setStyle(sf::Text::Bold);
+
+    //Window.display();
+
+    
+    //    LoadingAnimation(Window, trunc(Utility::windowParam.x * 0.70), trunc(Utility::windowParam.y * 0.70), (float)-0.01); 
+    //     text.setFillColor(sf::Color::Red);
+    //    if (Mouse::isButtonPressed(Mouse::Left) && MouseOnSprite(Window, text)){ text.setFillColor(sf::Color::Green);
+    //    }
+    //    Window.draw(text);
+    //    Window.display();
+    //}
 
     
 

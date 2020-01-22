@@ -26,12 +26,14 @@ public:
 	static Vector2f scale;
 	static Vector2u windowParam;
 	static void set(RenderWindow& window);
+	static std::chrono::milliseconds flick;
 
 private:
 	static int LoadingAngle;
 
 };
 
+std::chrono::milliseconds Utility::flick;
 Texture Utility::LoadingTexture;
 Sprite Utility::LoadingSprite;
 Vector2u Utility::windowParam;
