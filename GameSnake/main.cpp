@@ -140,35 +140,6 @@ void buttonClickHandler(const std::vector<PlayerController>& controllers, const 
     }
 }
 
-enum struct AbilityAction
-{
-    USE_1_ABILITY,
-    USE_2_ABILITY,
-    USE_3_ABILITY,
-    USE_4_ABILITY,
-    USE_5_ABILITY,
-    USE_6_ABILITY
-};
-
-class PlayerController {
-public:
-    std::pair<sf::Keyboard::Key, Point2d> commands[4];
-};
-
-void buttonClickHandler(const std::vector<PlayerController>& controllers, const sf::Keyboard::Key button, Game& game) {
-    for (int curPlayerIndex = 0; curPlayerIndex < controllers.size(); curPlayerIndex++) {
-        for (int commandIndex = 0; commandIndex < 4; commandIndex++) {
-            if (button == controllers[curPlayerIndex].commands[commandIndex].first
-                && !game.getPlayer(curPlayerIndex).getIsPlayerMove()) {
-                if (game.setNewDirection(curPlayerIndex, controllers[curPlayerIndex].commands[commandIndex].second)) {
-                    game.setIsPlayerMove(curPlayerIndex, true);
-                    return;
-                }
-            }
-        }
-    }
-}
-
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1024, 512), "SFML Snake");

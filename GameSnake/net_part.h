@@ -117,6 +117,7 @@ public:
 					//отправка адресату: ip, команда, ширина поля, высота поля
 					int lenght = sprintf(buffer, "TAKE_CONFIG%lu%hu%hu%c",server_address, map_width, map_height);
 					sendto(trans_sock, buffer, lenght, 0, (sockaddr*)&players_addresses.back(), sizeof(players_addresses.back()));
+					this->game->addNewPlayer(Player(Point2d(2 + this->game->getAllPlayers().size(), 0) * 2, Point2d(0, 1)));
 				}
 			}
 	}
